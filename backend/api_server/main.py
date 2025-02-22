@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 
-from database import mongo_collection
+from database import mongo_collection, get_sqldb
 from bson import ObjectId
 
 app = FastAPI()
@@ -8,7 +8,12 @@ app = FastAPI()
 #################### sql #####################
 # create table in MySql (if not exits)
 
-
+@app.get("/users")
+def get_users(db=Depends(get_sqldb)):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT * FROM users")
+        users = cursor.fetchall()
+    return {"users": users}
 
 #################### MongoDB #####################
 # add data into MongoDB
