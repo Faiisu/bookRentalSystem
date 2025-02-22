@@ -1,9 +1,10 @@
 fastapi
-uvicorn
+uvicorn # for run api server
 pymongo
+jwt
+
 motor  # Async MongoDB driver
-python-dotenv
-pydantic[email]
-passlib[bcrypt]
-datetime
-PyJWT
+python-dotenv # for import dotenv
+databases
+
+aiomysql

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.database import db, serialize_product
+from server.database import db, serialize_product
 
 router = APIRouter()
 
