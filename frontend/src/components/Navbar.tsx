@@ -31,7 +31,7 @@ const Navbar = () => {
       {/* Primary Navbar */}
       <nav className="border-b-3 border-black flex items-center justify-between p-4 bg-white">
       {/* Logo */}
-      <Link to="/" className="text-3xl font-bold">มั้งนะ</Link>
+      <Link to="/" className="text-3xl font-bold">BOOK</Link>
 
       {/* Search Bar */}
       <div className="w-1/3">
