@@ -30,39 +30,39 @@ const Navbar = () => {
     <div className="bg-white">
       {/* Primary Navbar */}
       <nav className="border-b-3 border-black flex items-center justify-between p-4 bg-white">
-      {/* Logo */}
-      <Link to="/" className="text-3xl font-bold">BOOK</Link>
+        {/* Logo */}
+        <Link to="/" className="text-3xl font-bold">BOOK</Link>
 
-      {/* Search Bar */}
-      <div className="w-1/3">
-        <SearchBar onSearch={handleSearch} />
-      </div>
-
-      {/* Cart + Authentication Section */}
-      <div className="flex items-center gap-6">
-        {/* Cart */}
-        <Link to="/cart" className="relative hover:underline">
-          Cart
-          {cartItems.length > 0 && (
-            <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {cartItems.length}
-            </span>
-          )}
-        </Link>
-
-        {/* Authentication */}
-        <div>
-          {isLoggedIn ? (
-            <button onClick={handleLogout} className="hover:underline">Logout</button>
-          ) : (
-            <>
-              <Link to="/login" className="hover:underline">Login</Link>
-              <Link to="/register" className="hover:underline ml-4">Register</Link>
-            </>
-          )}
+        {/* Search Bar */}
+        <div className="w-1/3">
+          <SearchBar onSearch={handleSearch} />
         </div>
-      </div>
-    </nav>
+
+        {/* Cart + Authentication Section */}
+        <div className="flex items-center gap-6">
+          {/* Cart */}
+          <Link to="/cart" className="relative hover:underline">
+            Cart
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {cartItems.length}
+              </span>
+            )}
+          </Link>
+
+          {/* Authentication */}
+          <div>
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className="hover:underline">Logout</button>
+            ) : (
+              <>
+                <Link to="/login" className="hover:underline">Login</Link>
+                <Link to="/register" className="hover:underline ml-4">Register</Link>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
       {/* Categories Section Below Navbar */}
       <div className="bg-gray-100 py-3">
         <div className="flex justify-center gap-6 font-semibold uppercase text-sm">

@@ -42,7 +42,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen min-w-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
 
@@ -65,20 +65,22 @@ const Register = () => {
           {/* Password Input with Toggle Button */}
           <div className="mb-4 relative">
             <label className="block text-gray-700">Password</label>
-            <input
-              type={showPassword ? "text" : "password"} // ✅ Toggle visibility
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded mt-1 pr-14 text-black"
-              required
-            />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="inset-y-3 absolute right-3 flex items-center justify-center bg-transparent z-10"
-                >
-                  {showPassword ? <EyeOffIcon size={30} className=" text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
-                </button>       
+            
+            <div className="flex items-center w-full border border-gray-300 rounded mt-1 text-black">
+              <input
+                type={showPassword ? "text" : "password"} // ✅ Toggle visibility
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="p-2 m-0 w-full border-gray-300 rounded text-black"
+                required />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="z-10 absolute right-1 p-0 m-0 appearance-none border-none"
+              >
+                {showPassword ? <EyeOffIcon size={15} className="text-gray-500" /> : <EyeIcon size={15} className="text-gray-500 pl-0 pr-0" />}
+              </button>
+            </div>
           </div>
 
           {/* Confirm Password Input */}
