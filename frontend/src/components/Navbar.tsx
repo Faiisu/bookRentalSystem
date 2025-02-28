@@ -32,15 +32,15 @@ const Navbar = () => {
       <nav className="min-w-[100vw] fixed top-0 z-9999 border-b-3 border-black flex items-center justify-between p-4 bg-white">
       {/* Logo */}
       <Link to="/" className="text-3xl font-bold">LOGO</Link>
-
       {/* Search Bar */}
       <div className="w-1/3">
         <SearchBar onSearch={handleSearch} />
       </div>
-
       {/* Cart + Authentication Section */}
       <div className="flex items-center gap-6">
+
         {/* Cart */}
+
         <Link to="/cart" className="relative hover:underline">
           Cart
           {cartItems.length > 0 && (
