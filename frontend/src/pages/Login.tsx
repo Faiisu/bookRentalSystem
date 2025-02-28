@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api";
+// import { EyeIcon, EyeOffIcon } from "lucide-react"; 
+// import { EyeOffIcon } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState(""); // Manage email state
   const [password, setPassword] = useState(""); // Manage password state
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false); // Loading state
+  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const Login = () => {
   };
   return (
     <div className="flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-96 mb-30">
         <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form>
@@ -63,14 +66,29 @@ const Login = () => {
           </div>
 
           {/* Password Input */}
+          
           <div className="mb-4">
             <label className="block text-gray-700">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="relative z-10 bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
-            />
+
+            <div className="flex items-center w-full border border-gray-300 rounded mt-1 text-black">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={handlePasswordChange}
+                className="p-2 m-0 w-full border-gray-300 rounded text-black"
+              />
+              <button
+                type = "button"
+                className="p-2 z-10 absolute right-1 p-0 m-0 appearance-none border-none focus:outline-none focus:ring-0 shadow-none"
+                onClick={()=> setShowPassword(!showPassword)}
+              >
+                {/* {showPassword? :
+                  <EyeOffIcon size={15} className="text-gray-500" /> :
+                  <EyeIcon size={15} className="text-gray-500 pl-0 pr-0" />
+                  } */}
+                
+              </button>
+            </div>
           </div>
 
           <button

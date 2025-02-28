@@ -27,11 +27,11 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white min-w-full ">
       {/* Primary Navbar */}
-      <nav className="border-b-3 border-black flex items-center justify-between p-4 bg-white">
+      <nav className="min-w-[100vw] fixed top-0 z-9999 border-b-3 border-black flex items-center justify-between p-4 bg-white">
       {/* Logo */}
-      <Link to="/" className="text-3xl font-bold">มั้งนะ</Link>
+      <Link to="/" className="text-3xl font-bold">LOGO</Link>
 
       {/* Search Bar */}
       <div className="w-1/3">
@@ -63,6 +63,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+      <div className="h-21"></div>
       {/* Categories Section Below Navbar */}
       <div className="bg-gray-100 py-3">
         <div className="flex justify-center gap-6 font-semibold uppercase text-sm">
