@@ -1,5 +1,6 @@
 fastapi
 uvicorn # for run api server
+pymysql
 
 motor  # Async MongoDB driver
 python-dotenv # for import dotenv
