@@ -10,6 +10,7 @@ const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
+  
   const navigate = useNavigate(); // Redirect after successful signup
 
   // Handle form submission
@@ -43,7 +44,7 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen min-w-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-96 mb-30">
         <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
 
         {/* Error Message */}
@@ -64,30 +65,38 @@ const Register = () => {
 
           {/* Password Input with Toggle Button */}
           <div className="mb-4 relative">
-            <label className="block text-gray-700">Password</label>
-            
+            <div className="flex">
+              <label className="block text-gray-700">
+                Password 
+              </label>
+              <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="p-1 z-10 p-0 m-0 ml-1 appearance-none border-none"
+                  >
+                    {showPassword ?
+                      <EyeOffIcon size={15} className="text-gray-500" /> :
+                      <EyeIcon size={15} className="text-gray-500 pl-0 pr-0" />}
+              </button>
+            </div>    
+
             <div className="flex items-center w-full border border-gray-300 rounded mt-1 text-black">
               <input
                 type={showPassword ? "text" : "password"} // ✅ Toggle visibility
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="p-2 m-0 w-full border-gray-300 rounded text-black"
-                required />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="z-10 absolute right-1 p-0 m-0 appearance-none border-none"
-              >
-                {showPassword ? <EyeOffIcon size={15} className="text-gray-500" /> : <EyeIcon size={15} className="text-gray-500 pl-0 pr-0" />}
-              </button>
+                required />          
             </div>
           </div>
 
           {/* Confirm Password Input */}
-          <div className="mb-4">
-            <label className="block text-gray-700">Confirm Password</label>
+          <div className="mb-4">           
+            <label className="block text-gray-700">
+              Confirm Password 
+            </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="relative bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
