@@ -1,11 +1,13 @@
 from pydantic import BaseModel;
+from datetime import date;
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
-class CreateUser(BaseModel):
+class CreateMember(BaseModel):
     email: str
     password: str
+    name: str
     
 class UserResponse(BaseModel):
     id: int

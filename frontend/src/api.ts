@@ -33,11 +33,6 @@ export const fetchUsers = async () => {
 
 export const addUser = async (email:string, password:string) => {
   try {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if(!emailRegex.test(email)){
-      throw new Error("Invalid email format");
-    }
-
     const response = await api.post("/users",
       {email, password},
       { headers: { "Content-Type": "application/json" } } // ✅ กำหนด Content-Type

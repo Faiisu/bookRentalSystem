@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from database import get_sqldb  # เชื่อมต่อ MySQL
-from mySQL_models import CreateUser  # Import Pydantic Schema
+from mySQL_models import *
 
 app = FastAPI()
 
@@ -25,23 +25,25 @@ app.add_middleware(
 @app.get("/users")
 def get_users(db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email FROM users")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
+        cursor.execute("SELECT email,name FROM Member")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
         users = cursor.fetchall()
-    return {"users": users}
+    return {"Members": users}
+
+#########################################################
 
 @app.post("/users")
-def add_user(user: CreateUser, db=Depends(get_sqldb)):
+def add_user(user: CreateMember, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
         # ✅ ตรวจสอบว่า Email ซ้ำหรือไม่
-        cursor.execute("SELECT email FROM users WHERE email = %s", (user.email,))
+        cursor.execute("SELECT email FROM Member WHERE email = %s", (user.email,))
         existing_user = cursor.fetchone()
         if existing_user:
             raise HTTPException(status_code=400, detail="Email already registered")
 
         # ✅ เพิ่ม User ใหม่
         cursor.execute(
-            "INSERT INTO users (email, password) VALUES (%s, %s)", 
-            (user.email, user.password)
+            "INSERT INTO Member (email, name, password) VALUES (%s, %s, %s)", 
+            (user.email, user.name, user.password)
         )
         db.commit()  # 🔹 ต้อง commit() เพื่อบันทึกข้อมูลลง MySQL
         user_id = cursor.lastrowid  # ✅ ได้ ID ที่ถูกเพิ่มล่าสุด
@@ -51,12 +53,12 @@ def add_user(user: CreateUser, db=Depends(get_sqldb)):
 @app.delete("/users/{email}")
 def delete_user(email: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email FROM users WHERE email = %s", email)
+        cursor.execute("SELECT email FROM Member WHERE email = %s", email)
         existing_user = cursor.fetchone()
         if not existing_user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        cursor.execute("DELETE FROM users WHERE email = %s", email)
+        cursor.execute("DELETE FROM Member WHERE email = %s", email)
         db.commit()
     return {"Message" : f"User {email} deleted successfully"}
 
