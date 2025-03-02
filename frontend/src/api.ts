@@ -31,16 +31,38 @@ export const fetchUsers = async () => {
   }
 }
 
-export const addUser = async (email:string, password:string) => {
+export const fetchUserByEmail = async(email: string) => {
+  try {
+    const res = await api.get(`/users/${email}`)
+    return res.data;
+  } catch (error){
+    console.error("Error fetching user by email", error);
+    throw error;
+  }
+}
+
+export const addUser = async (email:string, name:string, password:string) => {
   try {
     const response = await api.post("/users",
-      {email, password},
+      {email, name, password},
       { headers: { "Content-Type": "application/json" } } // ✅ กำหนด Content-Type
     );
 
     return response.data;
   } catch (error) {
     console.error("Error adding user:", error);
+    throw error;
+  }
+};
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await api.get(`/users/${email}/${password}`,
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;  // This will contain the access token
+  } catch (error) {
+    console.error("Error logging in user:", error);
     throw error;
   }
 };
@@ -95,27 +117,6 @@ export const deleteProduct = async (productId: string) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting product:", error);
-    throw error;
-  }
-};
-
-// Axios requests for User authentication (Login and Signup)
-export const signupUser = async (email: string, password: string) => {
-  try {
-    const response = await api.post('/users', { email, password });
-    return response.data;
-  } catch (error) {
-    console.error("Error signing up user:", error);
-    throw error;
-  }
-};
-
-export const loginUser = async (email: string, password: string) => {
-  try {
-    const response = await api.post('/login', { email, password });
-    return response.data;  // This will contain the access token
-  } catch (error) {
-    console.error("Error logging in user:", error);
     throw error;
   }
 };

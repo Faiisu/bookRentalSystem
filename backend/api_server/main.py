@@ -29,7 +29,26 @@ def get_users(db=Depends(get_sqldb)):
         users = cursor.fetchall()
     return {"Members": users}
 
-#########################################################
+@app.get("/users/{email}")
+def get_users_by_email(email: str, db=Depends(get_sqldb)):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT email FROM Member where email = %s", email)
+        existing_user = cursor.fetchone()
+        if existing_user:
+            return {"Members": email}
+        else:
+            raise HTTPException(status_code=404, detail="email not found")
+        
+@app.get("/users/{email}/{password}")
+def login_user(email: str, password: str, db=Depends(get_sqldb)):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT email FROM Member where email = %s and password = %s", (email, password))
+        existing_user = cursor.fetchone()
+        if existing_user:
+            return {"Members": email}
+        else:
+            raise HTTPException(status_code=404, detail="email not found")
+
 
 @app.post("/users")
 def add_user(user: CreateMember, db=Depends(get_sqldb)):

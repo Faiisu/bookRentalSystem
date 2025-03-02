@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addUser } from "../api"; // ✅ Import API function
+import { addUser, fetchUserByEmail } from "../api"; // ✅ Import API function
 import { EyeIcon, EyeOffIcon } from "lucide-react"; 
 
 const Register = () => {
@@ -11,6 +11,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [accept, setAccept] = useState<string| null>(null);
+  const [username, setUsername] = useState("");
   
   const navigate = useNavigate(); // Redirect after successful signup
 
@@ -30,6 +31,11 @@ const Register = () => {
       setLoading(false);
       return;
     }
+    else if(username == ""){
+      setError("Username can't be empty");
+      setLoading(false);
+      return;
+    }
 
     try {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -37,9 +43,16 @@ const Register = () => {
         setError("❌ Signup Error: Invalid email format ");
       }
       else{
-        const res = await addUser(email, password); //call api
-        console.log("✅ Signup Successful:", email);
-        setAccept("✅ Signup Successful!");
+        try{
+          const isEmailExist = await fetchUserByEmail(email);
+          setError("Email has already been used.")
+          setLoading(false);
+          return;
+        } catch(err){
+          const res = await addUser(email, username, password); //call api
+          console.log("✅ Signup Successful:", email);
+          setAccept("✅ Signup Successful!");
+        }
         
         // Store token in localStorage
         // localStorage.setItem("token", data.token);
@@ -56,7 +69,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen min-w-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-[100vh] min-w-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 mb-30">
         <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
 
@@ -71,6 +84,17 @@ const Register = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="relative z-10 bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
+              required
+            />
+          </div>
+
+          {/* Username input */}
+          <div className="mb-4">
+            <label className="block text-gray-700">Username</label>
+            <input  
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="relative z-10 bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
               required
             />

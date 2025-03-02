@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, fetchUsers } from "../api";
+import { loginUser, fetchUserByEmail } from "../api";
 // import { EyeIcon, EyeOffIcon } from "lucide-react"; 
 // import { EyeOffIcon } from "lucide-react";
 
@@ -8,6 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState(""); // Manage email state
   const [password, setPassword] = useState(""); // Manage password state
   const [error, setError] = useState<string | null>(null);
+  const [accept, setAccept] = useState<string| null>(null);
   const [loading, setLoading] = useState(false); // Loading state
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate();  
@@ -32,14 +33,22 @@ const Login = () => {
     setError(null); // Clear previous errors
 
     try {
+      try{
+        const res = await fetchUserByEmail(email);
+      } catch(error){
+        setError("Email not found");
+        setLoading(false);
+        return;
+      }
+
       const data = await loginUser(email, password); // Call API function
       console.log("✅ Login Successful:", data);
+      setAccept("✅ Login Successful");
+      // // Store token in localStorage
+      // localStorage.setItem("token", data.token);
 
-      // Store token in localStorage
-      localStorage.setItem("token", data.token);
-
-      // Redirect to home page after successful login
-      navigate("/");
+      // // Redirect to home page after successful login
+      // navigate("/");
 
     } catch (err: any) {
       console.error("❌ Login Error:", err);
@@ -53,6 +62,7 @@ const Login = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 mb-30">
         <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {accept && <p className="text-green-500 text-sm mb-4">{accept}</p>}
         <form>
           {/* Email Input */}
           <div className="mb-4">
