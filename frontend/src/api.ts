@@ -18,7 +18,37 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 5000,
 });
+
+export const fetchUsers = async () => {
+  try{
+    const response = await api.get("/users");
+    return response.data.users;
+  } catch(error){
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+}
+
+export const addUser = async (email:string, password:string) => {
+  try {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if(!emailRegex.test(email)){
+      throw new Error("Invalid email format");
+    }
+
+    const response = await api.post("/users",
+      {email, password},
+      { headers: { "Content-Type": "application/json" } } // ✅ กำหนด Content-Type
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error adding user:", error);
+    throw error;
+  }
+};
 
 // Axios requests for Product management
 export const fetchProducts = async (): Promise<Product[]> => {
@@ -77,7 +107,7 @@ export const deleteProduct = async (productId: string) => {
 // Axios requests for User authentication (Login and Signup)
 export const signupUser = async (email: string, password: string) => {
   try {
-    const response = await api.post('/signup', { email, password });
+    const response = await api.post('/users', { email, password });
     return response.data;
   } catch (error) {
     console.error("Error signing up user:", error);

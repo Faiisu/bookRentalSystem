@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signupUser } from "../api"; // ✅ Import API function
+import { addUser } from "../api"; // ✅ Import API function
 import { EyeIcon, EyeOffIcon } from "lucide-react"; 
 
 const Register = () => {
@@ -9,7 +9,8 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [accept, setAccept] = useState<string| null>(null);
   
   const navigate = useNavigate(); // Redirect after successful signup
 
@@ -17,26 +18,38 @@ const Register = () => {
   const handleRegister = async () => {
     setLoading(true);
     setError(null);
+    setAccept(null);
 
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       setLoading(false);
       return;
     }
+    else if(password == ""){
+      setError("Passwords can't be empty");
+      setLoading(false);
+      return;
+    }
 
     try {
-      const data = await signupUser(email, password); // Call API
-      console.log("✅ Signup Successful:", data);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if(!emailRegex.test(email)){
+        setError("❌ Signup Error: Invalid email format ");
+      }
+      else{
+        const res = await addUser(email, password); //call api
+        console.log("✅ Signup Successful:", email);
+        setAccept("✅ Signup Successful!");
+        
+        // Store token in localStorage
+        // localStorage.setItem("token", data.token);
 
-      // Store token in localStorage
-      localStorage.setItem("token", data.token);
-
-      // Redirect user to home page
-      navigate("/");
-
-    } catch (err: any) {
-      console.error("❌ Signup Error:", err);
-      setError(err.response?.data?.message || "Signup failed. Try again.");
+        // Redirect user to home page
+        // navigate("/");
+      }
+    } catch (error) {
+      console.error("❌ Signup Error:", error);
+      setError("❌ Signup Error");
     } finally {
       setLoading(false);
     }
@@ -49,7 +62,7 @@ const Register = () => {
 
         {/* Error Message */}
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-
+        {accept && <p className="text-green-500 text-sm mb-4">{accept}</p>}
         <form onSubmit={(e) => e.preventDefault()}> {/* Prevent default form submit */}
           {/* Email Input */}
           <div className="mb-4">

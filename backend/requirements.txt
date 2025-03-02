@@ -1,6 +1,10 @@
 fastapi
+starlette #for configure CORS
 uvicorn # for run api server
 pymysql
+sqlalchemy
+cryptography
 
 motor  # Async MongoDB driver
 python-dotenv # for import dotenv
+

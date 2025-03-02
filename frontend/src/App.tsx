@@ -7,6 +7,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Navbar from "./components/Navbar"; // ✅ Import Navbar component
 import Cart from "./pages/Cart";
 import SearchPage from "./pages/SearchPage";
+import TestPage from "./pages/test";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/test" element={<TestPage />} />
       </Routes>
     </>
   );

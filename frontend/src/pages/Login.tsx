@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api";
+import { loginUser, fetchUsers } from "../api";
 // import { EyeIcon, EyeOffIcon } from "lucide-react"; 
 // import { EyeOffIcon } from "lucide-react";
 
@@ -10,7 +10,7 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false); // Loading state
   const [showPassword, setShowPassword] = useState(false)
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
 
   useEffect(() => {
     console.log("🔥 Login component mounted");
