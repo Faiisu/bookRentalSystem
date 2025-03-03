@@ -3,20 +3,25 @@ import { useEffect, useState } from "react";
 import { useCartStore } from "../store/cartStore";
 import SearchBar from "./SearchBar";
 
+
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { cartItems } = useCartStore();
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [dropdown, setDropDown] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("email");
     setIsLoggedIn(!!token);
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("name");
     setIsLoggedIn(false);
+    navigate("/Login")
   };
 
   // Handle search and navigate to search page
@@ -25,6 +30,10 @@ const Navbar = () => {
       navigate(`/search?q=${query}`);
     }
   };
+
+  const showDropDown = () => {
+    setDropDown(!dropdown);
+  }
 
   return (
     <div className="bg-white min-w-full ">
@@ -53,7 +62,14 @@ const Navbar = () => {
         {/* Authentication */}
         <div>
           {isLoggedIn ? (
-            <button onClick={handleLogout} className="hover:underline">Logout</button>
+            <div className="relative group">           
+              <button onClick={showDropDown} className="!hover:underline !border-0">{name}</button>
+              {/* dropdown menu */}
+              <div className="absolute right-2 top-[10px] hidden mt-2 w-64 space-y-2 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block">
+                <a href="#" onClick={()=>{navigate("\PersonalInfo")}} className="block px-4 py-2 text-gray-800 hover:bg-gray-200">My Account</a>
+                <a href="#" onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+              </div> 
+            </div>
           ) : (
             <>
               <Link to="/login" className="hover:underline">Login</Link>

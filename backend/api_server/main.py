@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+
 from database import get_sqldb  # เชื่อมต่อ MySQL
 from mySQL_models import *
 
@@ -32,20 +33,20 @@ def get_users(db=Depends(get_sqldb)):
 @app.get("/users/{email}")
 def get_users_by_email(email: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email FROM Member where email = %s", email)
+        cursor.execute("SELECT email, name FROM Member where email = %s", email)
         existing_user = cursor.fetchone()
         if existing_user:
-            return {"Members": email}
+            return {"Member": existing_user}
         else:
             raise HTTPException(status_code=404, detail="email not found")
         
 @app.get("/users/{email}/{password}")
 def login_user(email: str, password: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email FROM Member where email = %s and password = %s", (email, password))
+        cursor.execute("SELECT email, name FROM Member where email = %s and password = %s", (email, password))
         existing_user = cursor.fetchone()
         if existing_user:
-            return {"Members": email}
+            return {"Member": existing_user}
         else:
             raise HTTPException(status_code=404, detail="email not found")
 
@@ -68,6 +69,8 @@ def add_user(user: CreateMember, db=Depends(get_sqldb)):
         user_id = cursor.lastrowid  # ✅ ได้ ID ที่ถูกเพิ่มล่าสุด
 
     return {"id": user_id, "email": user.email}
+
+
 
 @app.delete("/users/{email}")
 def delete_user(email: str, db=Depends(get_sqldb)):
