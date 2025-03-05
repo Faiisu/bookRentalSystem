@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Product } from "../types";
+import { Book } from "../type";
 
 const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<Book[]>([]);
 
   const removeFromCart = (id: string) => {
     setCartItems(cartItems.filter((item) => item._id !== id));
@@ -20,7 +20,7 @@ const Cart: React.FC = () => {
         <ul>
           {cartItems.map((item) => (
             <li key={item._id} className="flex justify-between py-2 border-b">
-              <span>{item.name}</span>
+              <span>{item.title}</span>
               <span>${item.price.toFixed(2)}</span>
               <button
                 onClick={() => removeFromCart(item._id)}

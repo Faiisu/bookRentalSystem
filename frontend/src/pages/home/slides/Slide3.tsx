@@ -3,7 +3,7 @@ import Pain from "../../../assets/homepagepic/Pain.jpg";
 const Slide3 = () => {
   return (
     <div 
-      className="w-full h-[700px] bg-center bg-cover bg-no-repeat"
+      className="w-full h-[700px] bg-center bg-cover bg-no-repeat relative"
       style={{ backgroundImage: `url(${Pain})` }}
     >
     </div>

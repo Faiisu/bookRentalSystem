@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { Product } from "../type"; // Ensure you have a `Product` type
+import { Book } from "../type"; // Ensure you have a `Product` type
 
 interface CartState {
-  cartItems: Product[];
-  addToCart: (product: Product) => void;
+  cartItems: Book[];
+  addToCart: (book: Book) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
 }

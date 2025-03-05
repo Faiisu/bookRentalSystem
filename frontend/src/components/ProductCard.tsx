@@ -1,21 +1,22 @@
 import React from "react";
-import { Product } from "../type";
+import { Book } from "../type";
 import { Link } from "react-router-dom";
 
-const ProductCard: React.FC<Product> = ({ _id, name, price, image }) => {
+const BookCard: React.FC<Book> = ({ _id, title, price, image_url }) => {
   return (
-    <Link to={`/products/${_id}`} className="border-3 p-4 shadow hover:shadow-lg transition-transform hover:scale-105 text-black">
-      {/* Product Image */}
-      <img src={image} alt={name} className="w-full h-40 object-cover rounded-md" />
+    <div className="border-3 p-4 shadow hover:shadow-lg transition-transform hover:scale-105 text-black rounded-md">
+      <Link to={`/books/${_id}`} className="block w-full h-full">
+        {/* Book Image */}
+        <img src={image_url} alt={title} className="w-full h-40 object-cover rounded-md" />
 
-      {/* Product Details */}
-      <div className="mt-3">
-        <h3 className="text-lg font-semibold">{name}</h3>
-        <p className="text-black text-sm">Price: ${price.toFixed(2)}</p>
-
-      </div>
-    </Link>
+        {/* Book Details */}
+        <div className="mt-3">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <p className="text-black text-sm">Price: ${price.toFixed(2)}</p>
+        </div>
+      </Link>
+    </div>
   );
 };
 
-export default ProductCard;
+export default BookCard;

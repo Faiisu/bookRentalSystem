@@ -1,8 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
-from database import get_sqldb  # เชื่อมต่อ MySQL
 from mySQL_models import *
+from typing import Optional, List
+from bson.objectid import ObjectId
+
+from mongo_models import Book
+from database.mongo import mongo_collection
+from database.mysql import get_sqldb
 
 app = FastAPI()
 
@@ -84,3 +89,54 @@ def delete_user(email: str, db=Depends(get_sqldb)):
         cursor.execute("DELETE FROM Member WHERE email = %s", email)
         db.commit()
     return {"Message" : f"User {email} deleted successfully"}
+
+
+
+# Product Part
+# ✅ Add a new book
+@app.post("/books", response_model=Book)
+async def add_book(book: Book):
+    book_dict = book.dict(by_alias=True)
+    result = await mongo_collection["books"].insert_one(book_dict)
+    book._id = str(result.inserted_id)
+    return book
+
+
+# ✅ Get all books
+@app.get("/books")
+async def get_books():
+    books_cursor = mongo_collection["books"].find()
+    books = await books_cursor.to_list(length=100)
+
+    # ✅ Ensure `_id` is included and converted to a string
+    books_with_id = [{**book, "_id": str(book["_id"])} for book in books]
+
+    return {"books": books_with_id} 
+
+# ✅ Get a book by ID
+@app.get("/books/{book_id}", response_model=Book)
+async def get_book(book_id: str):
+    book = await mongo_collection["books"].find_one({"_id": ObjectId(book_id)})
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    book["_id"] = str(book["_id"])
+    return book
+
+
+# ✅ Update a book
+@app.put("/books/{book_id}", response_model=Book)
+async def update_book(book_id: str, book: Book):
+    book_dict = {k: v for k, v in book.dict(by_alias=True).items() if v is not None}
+    result = await mongo_collection["books"].update_one({"_id": ObjectId(book_id)}, {"$set": book_dict})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return {**book.dict(), "id": book_id}
+
+
+# ✅ Delete a book
+@app.delete("/books/{book_id}")
+async def delete_book(book_id: str):
+    result = await mongo_collection["books"].delete_one({"_id": ObjectId(book_id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return {"message": "Book deleted"}
