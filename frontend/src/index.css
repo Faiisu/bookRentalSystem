@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'AnimeAce';
+  src: url('/fonts/animeace2_reg.ttf') format('truetype');
+  font-weight: 400; /* Normal */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AnimeAce';
+  src: url('/fonts/animeace2_bld.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AnimeAce';
+  src: url('/fonts/animeace2_ital.ttf') format('truetype');
+  font-weight: 400; /* Normal weight */
+  font-style: italic;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -7,7 +28,7 @@
 
   color-scheme: light dark;
   color: rgba(7, 7, 7, 0.87);
-  background-color: #d2d1d1;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -70,8 +91,8 @@ button:focus-visible {
 }
 
 .speech-bubble {
-  width: 200px; /* Adjust as needed */
-  height: 150px;
+  width: 500px; /* Adjust as needed */
+  height: 300px;
   background-image: url("./assets/borders/bubble1.png"); /* Use correct path */
   background-size: contain;
   background-repeat: no-repeat;
@@ -84,4 +105,26 @@ button:focus-visible {
   font-weight: bold;
   color: black; /* Adjust text color */
   padding: 50px;
+}
+
+.urchin-bubble {
+  width: 300px;
+  height: 500px;
+  background-image: url("./assets/borders/urchin.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 25px;
+  font-family: 'AnimeAce', sans-serif; /* ✅ Fixed font name */
+  font-weight: bold;
+  color: black;
+  padding: 50px;
+}
+
+.font-animeace {
+  font-family: 'AnimeAce', sans-serif !important;
 }
