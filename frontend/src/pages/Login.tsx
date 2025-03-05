@@ -80,13 +80,15 @@ const Login = () => {
 
 
   return (
-    <div className="flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96 mb-30">
+    <div
+      className="bg-[url('./assets/homepagepic/Pain.jpg')] bg-[length:1500px] bg-center bg-no-repeat flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen"
+    >
+      <div className="border-1 bg-white/80 p-8 rounded-lg shadow-lg w-96 mb-30">
         {!accept &&
-          <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
+          <h2 className="font-animeace  text-2xl font-semibold text-center mb-4">Login</h2>
         }
         {accept &&
-          <h2 className="text-2xl font-semibold text-center mb-4">Login Successful</h2>
+          <h2 className="font-animeace  text-2xl font-semibold text-center mb-4">Login Successful</h2>
         }
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         {accept && <p className="text-green-500 text-sm mb-4">{accept}</p>}
@@ -99,7 +101,7 @@ const Login = () => {
                 type="email"
                 value={email}
                 onChange={handleEmailChange}
-                className="relative z-10 bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
+                className="relative z-10 text-black w-full p-2 border rounded mt-1"
               />
             </div>
 
@@ -108,7 +110,7 @@ const Login = () => {
             <div className="mb-4">
               <label className="block text-gray-700">Password</label>
 
-              <div className="flex items-center w-full border border-gray-300 rounded mt-1 text-black">
+              <div className="flex items-center w-full border rounded mt-1 text-black">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
@@ -132,7 +134,7 @@ const Login = () => {
             <button
               type="button"
               onClick={handleLogin}
-              className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"} text-white`}
+              className={`font-animeace  w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"} text-white`}
               disabled={loading}
             >
               {loading ? "Logging in..." : "Login"}
