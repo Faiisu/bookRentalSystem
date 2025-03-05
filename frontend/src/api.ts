@@ -1,16 +1,8 @@
 import axios from 'axios';
+import { Product } from './type';
+import { Book } from './type';
 
 const API_URL = 'http://localhost:8000'; // Assuming your FastAPI backend is running on port 8000
-
-type Product = {
-  _id: string;  // ✅ Change `_id` to string (not number)
-  name: string;
-  price: number;
-  image?: string;
-  category?: string;
-  rating?: number;
-};
-
 
 // Set up axios instance
 const api = axios.create({
@@ -98,6 +90,36 @@ export const fetchProduct = async (productId: string) => {
   } catch (error) {
     console.error("Error fetching product:", error);
     throw error;
+  }
+};
+
+export const fetchBooks = async (): Promise<Book[]> => {
+  try {
+    const response = await fetch("http://localhost:8000/books");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Full API Response:", data); // ✅ Debugging log
+    console.log("Books Array:", data.books); // ✅ Check if books exist
+
+    return data.books || []; // ✅ Return books or empty array
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return [];
+  }
+};
+
+export const fetchBook = async (id: string): Promise<Book | null> => {
+  try {
+    const response = await axios.get(`http://localhost:8000/books/${id}`);
+    console.log("Fetched Book:", response.data); // ✅ Debugging log
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching book:", error.response?.data || error.message);
+    return null; // ✅ Ensures we don't crash if the book isn't found
   }
 };
 
