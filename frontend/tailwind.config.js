@@ -6,3 +6,15 @@ export default {
     },
     plugins: [],
   };
+
+
+  module.exports = {
+    theme: {
+      extend: {
+        fontFamily: {
+          animeace: ['AnimeAce', 'sans-serif'], // ✅ Add this line
+        },
+      },
+    },
+    plugins: [],
+  };
