@@ -62,7 +62,7 @@ const Navbar = () => {
                 <>
                   <div className = "relative inline-block group">
                     <div                   
-                      className="px-4 py-2 rounded-md !cursor-pointer hover:underline text-lg font-semibold"
+                      className="rounded-md !cursor-pointer hover:underline text-lg font-semibold"
                     >
                       {name}
                     </div>

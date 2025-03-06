@@ -61,8 +61,18 @@ const Login = () => {
       const data = await loginUser(email, password); // Call API function
       console.log("✅ Login Successful:", data.Member.name);
       setAccept(`✅ Login Successful. Welcome ${data.Member.name}`);
-      localStorage.setItem("email", email);
-      localStorage.setItem("name", data.Member.name);
+      
+      for (let key in data.Member) {
+        if (data.Member.hasOwnProperty(key)) {
+          // For non-string data, stringify it
+          try {
+            localStorage.setItem(key, data.Member[key]);
+          } catch (e) {
+            console.error("Error saving to localStorage:", e);
+          }
+        }
+      }
+
       window.location.reload();
       // // Store token in localStorage
       // localStorage.setItem("token", data.token);

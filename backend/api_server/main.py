@@ -32,14 +32,14 @@ app.add_middleware(
 @app.get("/users")
 def get_users(db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email,name FROM Member")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
+        cursor.execute("SELECT * FROM Member")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
         users = cursor.fetchall()
     return {"Members": users}
 
 @app.get("/users/{email}")
 def get_users_by_email(email: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email, name FROM Member where email = %s", email)
+        cursor.execute("SELECT member_id, email, name, birthday, end_date, member_rank, point, discount FROM Member where email = %s", email)
         existing_user = cursor.fetchone()
         if existing_user:
             return {"Member": existing_user}
