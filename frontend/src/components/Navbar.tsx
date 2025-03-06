@@ -9,7 +9,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { cartItems } = useCartStore();
   const [name, setName] = useState(localStorage.getItem("name"));
-  const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("email");
@@ -36,10 +35,10 @@ const Navbar = () => {
       <nav className="fixed top-0 w-full z-50 border-b-2 border-gray-300 bg-white shadow-md">
         <div className="container mx-auto flex items-center justify-around py-4 px-6">
           {/* Logo */}
-          <Link to="/" className="text-3xl font-bold">LOGO</Link>
+          <Link to="/" className="mr-4 text-3xl font-bold">LOGO</Link>
 
           {/* Search Bar */}
-          <div className="flex-1 flex justify-center">
+          <div className="mr-4 flex-1 flex justify-center">
             <div className="w-full">
               <SearchBar onSearch={handleSearch} />
             </div>
@@ -61,30 +60,29 @@ const Navbar = () => {
             <div className="relative flex">
               {isLoggedIn ? (
                 <>
-                  <button
-                    onClick={() => setDropdown(!dropdown)}
-                    className="hover:underline text-lg font-semibold"
-                  >
-                    {name}
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {dropdown && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
-                      <button
-                        onClick={() => navigate("/PersonalInfo")}
-                        className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
-                      >
-                        My Account
-                      </button>
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
-                      >
-                        Logout
-                      </button>
+                  <div className = "relative inline-block group">
+                    <div                   
+                      className="px-4 py-2 rounded-md !cursor-pointer hover:underline text-lg font-semibold"
+                    >
+                      {name}
                     </div>
-                  )}
+                    
+                      {/* Dropdown Menu */}
+                    <div className="absolute right-0 mt-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block">
+                      <button
+                          onClick={() => navigate("/PersonalInfo")}
+                          className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        >
+                          My Account
+                        </button>
+                        <button
+                          onClick={handleLogout}
+                          className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        >
+                          Logout
+                        </button>
+                    </div>
+                  </div>    
                 </>
               ) : (
                 <>
