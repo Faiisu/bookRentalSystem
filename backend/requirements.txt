@@ -5,6 +5,7 @@ pymysql
 mysql-connector
 sqlalchemy
 cryptography
+pydantic
 
 motor  # Async MongoDB driver
 python-dotenv # for import dotenv

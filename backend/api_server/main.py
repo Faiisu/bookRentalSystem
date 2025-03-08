@@ -39,7 +39,7 @@ def get_users(db=Depends(get_sqldb)):
 @app.get("/users/{email}")
 def get_users_by_email(email: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT member_id, email, name, birthday, end_date, member_rank, point, discount FROM Member where email = %s", email)
+        cursor.execute("SELECT member_id, email, username, birthday, end_date, member_rank, point, discount FROM Member where email = %s", email)
         existing_user = cursor.fetchone()
         if existing_user:
             return {"Member": existing_user}
@@ -49,7 +49,7 @@ def get_users_by_email(email: str, db=Depends(get_sqldb)):
 @app.get("/users/{email}/{password}")
 def login_user(email: str, password: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT email, name FROM Member where email = %s and password = %s", (email, password))
+        cursor.execute("SELECT member_id, email, username, firstName, lastName, birthday, end_date, member_rank, point, discount FROM Member where email = %s and password = %s", (email, password))
         existing_user = cursor.fetchone()
         if existing_user:
             return {"Member": existing_user}
@@ -68,13 +68,13 @@ def add_user(user: CreateMember, db=Depends(get_sqldb)):
 
         # ✅ เพิ่ม User ใหม่
         cursor.execute(
-            "INSERT INTO Member (email, name, password) VALUES (%s, %s, %s)", 
-            (user.email, user.name, user.password)
+            "INSERT INTO Member (email, username, password, firstName, lastName) VALUES (%s, %s, %s, %s, %s)", 
+            (user.email, user.username, user.password, user.firstName, user.lastName)
         )
         db.commit()  # 🔹 ต้อง commit() เพื่อบันทึกข้อมูลลง MySQL
         user_id = cursor.lastrowid  # ✅ ได้ ID ที่ถูกเพิ่มล่าสุด
 
-    return {"id": user_id, "email": user.email}
+    return {"id": user_id, "email": user.email, "username": user.username, "firstname":user.firstName,"lastname":user.lastName}
 
 
 
@@ -91,6 +91,7 @@ def delete_user(email: str, db=Depends(get_sqldb)):
     return {"Message" : f"User {email} deleted successfully"}
 
 
+############################### MONGO DB ######################################
 
 # Product Part
 # ✅ Add a new book

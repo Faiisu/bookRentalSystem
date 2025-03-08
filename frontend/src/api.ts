@@ -33,11 +33,11 @@ export const fetchUserByEmail = async(email: string) => {
   }
 }
 
-export const addUser = async (email:string, name:string, password:string) => {
-  try {
+export const addUser = async (email:string, username:string, password:string, firstName:string, lastName:string) => {
+  try {   
     const response = await api.post("/users",
-      {email, name, password},
-      { headers: { "Content-Type": "application/json" } } // ✅ กำหนด Content-Type
+      {email, username, password, firstName, lastName},
+      { headers: { "Content-Type": "application/json" } }
     );
 
     return response.data;

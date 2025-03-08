@@ -12,6 +12,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [accept, setAccept] = useState<string| null>(null);
   const [username, setUsername] = useState("");
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
   
   const navigate = useNavigate(); // Redirect after successful signup
 
@@ -20,19 +22,14 @@ const Register = () => {
     setLoading(true);
     setError(null);
     setAccept(null);
-
+        
+    if(password === "" || username === "" || firstName === "" || lastName === "" || email === "" ){
+      setError("Please fill in all fields.");
+      setLoading(false);
+      return;
+    }   
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
-      setLoading(false);
-      return;
-    }
-    else if(password == ""){
-      setError("Passwords can't be empty");
-      setLoading(false);
-      return;
-    }
-    else if(username == ""){
-      setError("Username can't be empty");
       setLoading(false);
       return;
     }
@@ -49,7 +46,7 @@ const Register = () => {
           setLoading(false);
           return;
         } catch(err){
-          const res = await addUser(email, username, password); //call api
+          const res = await addUser(email, username, password, firstName, lastName); //call api
           console.log("✅ Signup Successful:", email);
           setAccept("✅ Signup Successful!");
         }
@@ -83,8 +80,8 @@ const Register = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="relative z-10 bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
+              onChange={(e) => {setEmail(e.target.value)}}
+              className="p-1 relative z-10 bg-white text-black w-full  border border-gray-300 rounded mt-1"
               required
             />
           </div>
@@ -94,10 +91,32 @@ const Register = () => {
             <label className="block text-gray-700">Username</label>
             <input  
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="relative z-10 bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
+              onChange={(e) => {setUsername(e.target.value)}}
+              className="p-1 relative z-10 bg-white text-black w-full  border border-gray-300 rounded mt-1"
               required
             />
+          </div>
+
+          {/* full name input */}
+          <div className="mb-4 grid grid-cols-2 max-w-[100%]">
+            <div className="m-0 pr-1">
+              <label className="block text-gray-700">First Name</label>
+              <input  
+                value={firstName}
+                onChange={(e) => {setFirstname(e.target.value)}}
+                className="bg-white p-1 text-black border border-gray-300 rounded mt-1 w-full"
+                required
+                />
+            </div>
+            <div className="m-0 pl-1">
+              <label className="block text-gray-700">Last Name</label>
+              <input  
+                value={lastName}
+                onChange={(e) => {setLastname(e.target.value)}}
+                className="bg-white p-1 text-black border border-gray-300 rounded mt-1 w-full"
+                required
+                />
+            </div>
           </div>
 
           {/* Password Input with Toggle Button */}
@@ -108,8 +127,8 @@ const Register = () => {
               </label>
               <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="p-1 z-10 p-0 m-0 ml-1 appearance-none border-none"
+                    onClick={() => {setShowPassword(!showPassword)}}
+                    className="p-1 z-10 m-0 ml-1 appearance-none border-none"
                   >
                     {showPassword ?
                       <EyeOffIcon size={15} className="text-gray-500" /> :
@@ -121,8 +140,8 @@ const Register = () => {
               <input
                 type={showPassword ? "text" : "password"} // ✅ Toggle visibility
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="p-2 m-0 w-full border-gray-300 rounded text-black"
+                onChange={(e) => {setPassword(e.target.value)}}
+                className="p-1 m-0 w-full border-gray-300 rounded text-black"
                 required />          
             </div>
           </div>
@@ -135,8 +154,8 @@ const Register = () => {
             <input
               type={showPassword ? "text" : "password"}
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="relative bg-white text-black w-full p-2 border border-gray-300 rounded mt-1"
+              onChange={(e) => {setConfirmPassword(e.target.value)}}
+              className="p-1 relative bg-white text-black w-full border border-gray-300 rounded mt-1"
               required
             />
           </div>
@@ -145,7 +164,7 @@ const Register = () => {
           <button
             type="button"
             onClick={handleRegister}
-            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"} text-white`}
+            className={`w-full p-1 rounded ${loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"} text-white`}
             disabled={loading}
           >
             {loading ? "Registering..." : "Register"}

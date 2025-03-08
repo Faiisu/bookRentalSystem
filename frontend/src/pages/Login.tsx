@@ -14,8 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onPageLoad = () =>{
-    if(localStorage.getItem("name") != null){
-      setAccept(`✅ Login Successful. Welcome ${localStorage.getItem("name")}`);
+    if(localStorage.getItem("username") != null){
+      setAccept(`✅ Login Successful. Welcome ${localStorage.getItem("username")}`);
     }
   }
   if(sessionStorage.getItem('reload') === 'true') {
@@ -91,7 +91,7 @@ const Login = () => {
 
   return (
     <div
-      className="bg-[url('./assets/homepagepic/Pain.jpg')] bg-[length:1500px] bg-center bg-no-repeat flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen"
+      className="bg-[url('./assets/homepagepic/Pain.jpg')] bg-[length:2500px] bg-center bg-no-repeat flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen"
     >
       <div className="border-1 bg-white/80 p-8 rounded-lg shadow-lg w-96 mb-30">
         {!accept &&
@@ -129,7 +129,7 @@ const Login = () => {
                 />
                 <button
                   type = "button"
-                  className="p-2 z-10 absolute right-1 p-0 m-0 appearance-none border-none focus:outline-none focus:ring-0 shadow-none"
+                  className="p-2 z-10 absolute right-1 m-0 appearance-none border-none focus:outline-none focus:ring-0 shadow-none"
                   onClick={()=> setShowPassword(!showPassword)}
                 >
                   {/* {showPassword? :

@@ -7,14 +7,20 @@ from sqlalchemy.ext.declarative import declarative_base
 class CreateMember(BaseModel):
     email: str
     password: str
-    name: str
+    username: str
+    firstName: str
+    lastName: str
+    
+    class Config:
+        orm_mode = True
     
 class UserResponse(BaseModel):
     id: int
     email: str
-    
+        
     class Config:
         orm_mode = True
+    
         
 Base = declarative_base()
 

@@ -2,25 +2,19 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCartStore } from "../store/cartStore";
 import SearchBar from "./SearchBar";
+import { handleLogout } from "../auth";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { cartItems } = useCartStore();
-  const [name, setName] = useState(localStorage.getItem("name"));
+  const [username, setName] = useState(localStorage.getItem("username") || null);
 
   useEffect(() => {
     const token = localStorage.getItem("email");
     setIsLoggedIn(!!token);
   }, [location]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("name");
-    setIsLoggedIn(false);
-    navigate("/Login");
-  };
 
   // Handle search and navigate to search page
   const handleSearch = (query: string) => {
@@ -58,13 +52,13 @@ const Navbar = () => {
 
             {/* Authentication */}
             <div className="relative flex">
-              {isLoggedIn ? (
+              {username != null ? (
                 <>
                   <div className = "relative inline-block group">
                     <div                   
                       className="rounded-md !cursor-pointer hover:underline text-lg font-semibold"
                     >
-                      {name}
+                      {username}
                     </div>
                     
                       {/* Dropdown Menu */}
