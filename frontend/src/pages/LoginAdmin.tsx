@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, fetchUserByEmail } from "../api";
-// import { EyeIcon, EyeOffIcon } from "lucide-react"; 
-// import { EyeOffIcon } from "lucide-react";
+import { loginAdmin } from "../api";
 
-const Login = () => {
+const LoginAdmin = () => {
   const [email, setEmail] = useState(""); // Manage email state
   const [password, setPassword] = useState(""); // Manage password state
-  const [error, setError] = useState<string | null>(null);
-  const [accept, setAccept] = useState<string| null>(localStorage.getItem("username"));
+  const [error, setError] = useState<string | null>(null); 
   const [loading, setLoading] = useState(false); // Loading state
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate();
@@ -33,33 +30,11 @@ const Login = () => {
     setError(null); // Clear previous errors
 
     try {
-      try{
-        const res = await fetchUserByEmail(email);
-      } catch(error){
-        setError("Email not found");
-        setLoading(false);
-        return;
-      }
-      if(password == ""){
-        setError("Password can't empty");
-        setLoading(false);
-        return;
-      }
+      const data = await loginAdmin(email, password); // Call API function
+      console.log("✅ Login Successful:", data.Employee.name);
+      localStorage.setItem("adminData", JSON.stringify(data.Employee));
 
-      const data = await loginUser(email, password); // Call API function
-      console.log("✅ Login Successful:", data.Member.name);
-      setAccept(`${data.Member.name}`);
-      
-      for (let key in data.Member) {
-        if (data.Member.hasOwnProperty(key)) {
-          // For non-string data, stringify it
-          try {
-            localStorage.setItem(key, data.Member[key]);
-          } catch (e) {
-            console.error("Error saving to localStorage:", e);
-          }
-        }
-      }
+      navigate('/AdminPanel');
 
       window.location.reload();
       // // Store token in localStorage
@@ -79,19 +54,12 @@ const Login = () => {
 
   return (
     <div
-      className="bg-[url('./assets/homepagepic/Pain.jpg')] bg-[length:2500px] bg-center bg-no-repeat flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen"
+      className="bg-center bg-no-repeat flex items-center justify-center h-[90vh] bg-gray-100 min-w-screen"
     >
       <div className="border-1 bg-white/80 p-8 rounded-lg shadow-lg w-96 mb-30">
-        {!accept &&
-          <h2 className="font-animeace  text-2xl font-semibold text-center mb-4">Login</h2>
-        }
-        {accept &&
-          <h2 className="font-animeace  text-2xl font-semibold text-center mb-4">Login Successful</h2>
-        }
+        <h2 className="font-animeace  text-2xl font-semibold text-center mb-4">Login</h2>        
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        {accept && <p className="text-green-500 text-sm mb-4">✅ Login Successful. Welcome {accept}</p>}
-        {!accept &&
-          <form>
+        <form>
             {/* Email Input */}
             <div className="mb-4">
               <label className="block text-gray-700">Email</label>
@@ -137,11 +105,10 @@ const Login = () => {
             >
               {loading ? "Logging in..." : "Login"}
             </button>
-          </form>
-        }
+        </form>  
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginAdmin;

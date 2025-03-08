@@ -59,6 +59,20 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
+export const loginAdmin = async (email: string, password: string) => {
+  try {
+    const response = await api.get(`/admins/${email}/${password}`,
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;  // This will contain the access token
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    throw error;
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Axios requests for Product management
 export const fetchProducts = async (): Promise<Product[]> => {
   try {

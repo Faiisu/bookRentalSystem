@@ -26,7 +26,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#################### SQL #####################
+###################### SQL ##############################################################
+
+
+########### user data query #########
 # ✅ ใช้ `cursor.execute()` เหมือนกันทั้ง GET และ POST
 
 @app.get("/users")
@@ -89,8 +92,20 @@ def delete_user(email: str, db=Depends(get_sqldb)):
         db.commit()
     return {"Message" : f"User {email} deleted successfully"}
 
+########### Admin data query #########
 
-############################### MONGO DB ######################################
+@app.get("/admins/{email}/{password}")
+def login_admin(email: str, password: str, db=Depends(get_sqldb)):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT name, position, salary, birthday, phone, email FROM Employee where email = %s and password = %s", (email, password))
+        existing_user = cursor.fetchone()
+        if existing_user:
+            return {"Employee": existing_user}
+        else:
+            raise HTTPException(status_code=404, detail="email not found")
+
+
+###################### MONGO DB ##############################################################
 
 # Product Part
 # ✅ Add a new book
