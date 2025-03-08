@@ -3,6 +3,7 @@ from datetime import date;
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from typing import Optional
 
 class CreateMember(BaseModel):
     email: str
@@ -10,6 +11,7 @@ class CreateMember(BaseModel):
     username: str
     firstName: str
     lastName: str
+    birthday: Optional[date] = None
     
     class Config:
         orm_mode = True

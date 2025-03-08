@@ -96,7 +96,7 @@ const PersonalInfo = () => {
                                         // value={firstNameState}
                                         onChange={(e) => setFirstname(e.target.value)}
                                         className="bg-white p-1 text-black border border-gray-300 rounded mt-1 w-full"
-                                        placeholder="First Name"
+                                        placeholder={firstName?firstName:""}
                                     />
                                 </div>
                                 <div className="m-0 pl-1">
@@ -104,7 +104,7 @@ const PersonalInfo = () => {
                                         // value={lastNameState}
                                         onChange={(e) => setLastname(e.target.value)}
                                         className="bg-white p-1 text-black border border-gray-300 rounded mt-1 w-full"
-                                        placeholder="Last Name"                                        
+                                        placeholder={lastName?lastName:""}                                      
                                     />
                                 </div>                             
                             </div>

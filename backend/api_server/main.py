@@ -66,16 +66,15 @@ def add_user(user: CreateMember, db=Depends(get_sqldb)):
         if existing_user:
             raise HTTPException(status_code=400, detail="Email already registered")
 
-        # ✅ เพิ่ม User ใหม่
+        # ✅ เพิ่ม User ใหม่, handle birthday as NULL if not provided
         cursor.execute(
-            "INSERT INTO Member (email, username, password, firstName, lastName) VALUES (%s, %s, %s, %s, %s)", 
-            (user.email, user.username, user.password, user.firstName, user.lastName)
+            "INSERT INTO Member (email, username, password, firstName, lastName, birthday) VALUES (%s, %s, %s, %s, %s, %s)", 
+            (user.email, user.username, user.password, user.firstName, user.lastName, user.birthday)
         )
         db.commit()  # 🔹 ต้อง commit() เพื่อบันทึกข้อมูลลง MySQL
         user_id = cursor.lastrowid  # ✅ ได้ ID ที่ถูกเพิ่มล่าสุด
 
-    return {"id": user_id, "email": user.email, "username": user.username, "firstname":user.firstName,"lastname":user.lastName}
-
+    return {"id": user_id, "email": user.email, "username": user.username, "firstname": user.firstName, "lastname": user.lastName, "birthday": user.birthday}
 
 
 @app.delete("/users/{email}")

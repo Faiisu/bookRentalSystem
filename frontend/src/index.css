@@ -69,9 +69,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  /* border-color: #000000; */
-}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #ffffff;
