@@ -25,12 +25,19 @@ class UpdateMember(BaseModel):
     class Config:
         orm_mode = True
     
-class UserResponse(BaseModel):
-    id: int
-    email: str
+# class UserResponse(BaseModel):
+#     id: int
+#     email: str
+#     password: str
+#     username: str
+#     firstName: str
+#     lastName: str
+#     birthday: Optional[date] = None
+    
+    
         
-    class Config:
-        orm_mode = True
+#     class Config:
+#         orm_mode = True
     
         
 Base = declarative_base()

@@ -27,7 +27,7 @@ const AdminMain = () => {
  
     return (
         <div className="flex ">
-            <div className=" bg-white p-8 pl-20 pr-20 rounded-2xl shadow-2xl w-[1000px] text-center relative">                
+            <div className=" bg-white p-8 pl-20 pr-20 rounded-2xl shadow-2xl w-[700px] text-center relative">                
                 <div>                
                     <div className="flex flex-col items-center mb-4">
                         <UserCircleIcon className="w-20 h-20 text-gray-400" />
@@ -38,8 +38,7 @@ const AdminMain = () => {
                     {/* Divider */}
                     <hr className="my-4 border-gray-200" />
                     <div className="text-left">                        
-                        <div className="mt-2"><label className=" font-bold">Position: </label>{position}</div>
-                        <div className="mt-2 font-bold">Full Name</div>
+                        <div className="mt-2"><label className=" font-bold">Position: </label>{position}</div>                      
                         <div className="grid grid-cols-2 max-w-[100%]">
                             <label className="block text-gray-700">{firstName}</label>                            
                             <label className="block text-gray-700">{lastName}</label>                                

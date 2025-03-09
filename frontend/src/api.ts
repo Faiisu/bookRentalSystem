@@ -13,10 +13,12 @@ const api = axios.create({
   timeout: 5000,
 });
 
+
+
 export const fetchUsers = async () => {
   try{
     const response = await api.get("/users");
-    return response.data.users;
+    return response.data;
   } catch(error){
     console.error("Error fetching users:", error);
     throw error;
@@ -70,6 +72,18 @@ export const loginAdmin = async (email: string, password: string) => {
     throw error;
   }
 };
+
+export const deleteMember = async(email: string) =>{
+  try {
+    const response = await api.delete(`/deleteuser/${email}`,
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;  // This will contain the access token
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    throw error;
+  }
+}
 
 export const updateMember = async (
   email: string,

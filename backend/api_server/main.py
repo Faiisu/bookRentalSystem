@@ -35,7 +35,7 @@ app.add_middleware(
 @app.get("/users")
 def get_users(db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT * FROM Member")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
+        cursor.execute("SELECT member_id, email, username, firstName, lastName, birthday, end_date, member_rank, point, discount FROM Member")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
         users = cursor.fetchall()
     return {"Members": users}
 
@@ -116,7 +116,7 @@ def update_user(email: str, user: UpdateMember, db=Depends(get_sqldb)):
         
     return {"Message": f"User {email} updated successfully"}
 
-@app.delete("/users/{email}")
+@app.delete("/deleteuser/{email}")
 def delete_user(email: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
         cursor.execute("SELECT email FROM Member WHERE email = %s", email)
