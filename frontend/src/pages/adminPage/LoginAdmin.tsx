@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginAdmin } from "../api";
+import { loginAdmin } from "../../api";
 
 const LoginAdmin = () => {
   const [email, setEmail] = useState(""); // Manage email state
@@ -34,7 +34,7 @@ const LoginAdmin = () => {
       console.log("✅ Login Successful:", data.Employee.name);
       localStorage.setItem("adminData", JSON.stringify(data.Employee));
 
-      navigate('/AdminPanel');
+      navigate('/AdminPanel/main');
 
       window.location.reload();
       // // Store token in localStorage
