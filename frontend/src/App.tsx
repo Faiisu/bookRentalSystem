@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
-import Books from "./pages/Books"; // ✅ Changed Products → Books
+import Books from "./pages/Books";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import BookDetail from "./pages/BookDetail"; // ✅ Changed ProductDetail → BookDetail
+import BookDetail from "./pages/BookDetail";
 import Navbar from "./components/Navbar"; 
 import Cart from "./pages/Cart";
 import SearchPage from "./pages/SearchPage";
@@ -15,17 +15,29 @@ import UserManage from "./pages/adminPage/userManage";
 import StockManage from "./pages/adminPage/stockManage";
 
 import { useState, useEffect } from "react";
+import React from "react";
+
+interface ProtectedAdminRouteProps {
+  children: React.ReactNode;
+}
+
+// ProtectedRoute Component for admin pages
+const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({ children }) => {
+  const adminData = localStorage.getItem("adminData");
+  if (!adminData) {
+    return <Navigate to="/login/admin" replace />;
+  }
+  return <>{children}</>;
+};
 
 const App = () => {
   const adminData = localStorage.getItem("adminData");
-  const [employeeData, setEmployeeObj] = useState(adminData?JSON.parse(adminData): null);
-  const [name, setName] = useState();
+  const [employeeData] = useState(adminData ? JSON.parse(adminData) : null);
 
   useEffect(() => {
     const root = document.getElementById("root");
-    if(root == null) return;
+    if (!root) return;
     // If the path starts with "/adminPanel", update display to flex.
-
     if (location.pathname.startsWith("/AdminPanel")) {
       root.style.display = "flex";
     } else {
@@ -36,7 +48,6 @@ const App = () => {
 
   return (
     <>
-      {/* Only render Navbar for these routes */}
       <Routes>
         <Route path="/" element={<><Navbar /><Home /></>} />
         <Route path="/books" element={<><Navbar /><Books /></>} />
@@ -49,9 +60,30 @@ const App = () => {
         
         {/* Admin route without Navbar */}
         <Route path="login/admin" element={<LoginAdmin />} />
-        <Route path="/adminPanel/main" element={<><AdminSideBar/><AdminMain/></>} />
-        <Route path="/adminPanel/usermanage" element={<><AdminSideBar/><UserManage/></>} />
-        <Route path="/adminPanel/stockmanage" element={<><AdminSideBar/><StockManage/></>} />
+        <Route path="/adminPanel/main" element={
+          <ProtectedAdminRoute>
+            <>
+              <AdminSideBar />
+              <AdminMain />
+            </>
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/adminPanel/usermanage" element={
+          <ProtectedAdminRoute>
+            <>
+              <AdminSideBar />
+              <UserManage />
+            </>
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/adminPanel/stockmanage" element={
+          <ProtectedAdminRoute>
+            <>
+              <AdminSideBar />
+              <StockManage />
+            </>
+          </ProtectedAdminRoute>
+        } />
       </Routes>
     </>
   );

@@ -71,6 +71,26 @@ export const loginAdmin = async (email: string, password: string) => {
   }
 };
 
+export const updateMember = async (
+  email: string,
+  updateData: {
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    birthday?: string;
+  }
+) => {
+  try {
+    const response = await api.put(`/users/${email}`, updateData, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating member:", error);
+    throw error;
+  }
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Axios requests for Product management

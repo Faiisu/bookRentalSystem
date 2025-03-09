@@ -4,7 +4,9 @@ const UserManage = () => {
     
 
     return (
-        <div>UserManage</div>
+        <div className=" justify-items-center text-center w-[100vw]">
+            
+        </div>
     );
 };
 

@@ -79,6 +79,42 @@ def add_user(user: CreateMember, db=Depends(get_sqldb)):
 
     return {"id": user_id, "email": user.email, "username": user.username, "firstname": user.firstName, "lastname": user.lastName, "birthday": user.birthday}
 
+@app.put("/users/{email}")
+def update_user(email: str, user: UpdateMember, db=Depends(get_sqldb)):
+    with db.cursor() as cursor:
+        # First, verify that the user exists
+        cursor.execute("SELECT email FROM Member WHERE email = %s", (email,))
+        existing_user = cursor.fetchone()
+        if not existing_user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Build the SQL update dynamically based on provided fields
+        update_fields = []
+        params = []
+        
+        if user.username is not None:
+            update_fields.append("username = %s")
+            params.append(user.username)
+        if user.firstName is not None:
+            update_fields.append("firstName = %s")
+            params.append(user.firstName)
+        if user.lastName is not None:
+            update_fields.append("lastName = %s")
+            params.append(user.lastName)
+        if user.birthday is not None:
+            update_fields.append("birthday = %s")
+            params.append(user.birthday)
+        
+        if not update_fields:
+            raise HTTPException(status_code=400, detail="No fields provided for update")
+        
+        # Append the email parameter for the WHERE clause
+        params.append(email)
+        sql = f"UPDATE Member SET {', '.join(update_fields)} WHERE email = %s"
+        cursor.execute(sql, params)
+        db.commit()
+        
+    return {"Message": f"User {email} updated successfully"}
 
 @app.delete("/users/{email}")
 def delete_user(email: str, db=Depends(get_sqldb)):

@@ -15,6 +15,15 @@ class CreateMember(BaseModel):
     
     class Config:
         orm_mode = True
+
+class UpdateMember(BaseModel):
+    username: Optional[str] = None
+    firstName: Optional[str] = None
+    lastName: Optional[str] = None
+    birthday: Optional[str] = None
+    
+    class Config:
+        orm_mode = True
     
 class UserResponse(BaseModel):
     id: int

@@ -27,7 +27,7 @@ const LoginAdmin = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    setError(null); // Clear previous errors
+    setError(null); // Clear previous errors4
 
     try {
       const data = await loginAdmin(email, password); // Call API function
