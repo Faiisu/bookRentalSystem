@@ -68,15 +68,11 @@ const UserManage: React.FC = () => {
     };
       
     return (
-    <div className="min-h-screen w-full flex justify-center items-start pt-10">
+    <div className="min-h-screen w-full flex justify-center items-center">
         {/* Background container with margin-top and border shadow */}
-        <div className="bg-gray-300 min-h-[700px] min-w-[500px] rounded-lg shadow-lg w-full max-w-5xl p-8 mt-8">
+        <div className="bg-gray-300 min-h-[700px] min-w-[500px] rounded-lg shadow-lg w-full max-w-5xl p-8">
         <div className='flex gap-5'>
-            <h2 className="text-3xl font-bold mb-6">Users</h2>
-            <button className='outline-1 w-20 h-10'></button>
-            <button className='outline-1 w-20 h-10'></button>
-            <button className='outline-1 w-20 h-10'></button>
-            <button className='outline-1 w-20 h-10'></button>
+            <h2 className="text-3xl font-bold mb-6">Users</h2>   
         </div>
         {users.length ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
