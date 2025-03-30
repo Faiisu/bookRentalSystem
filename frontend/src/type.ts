@@ -10,7 +10,7 @@ export type Product = {
 
 
   export type Book = {
-    _id: string; // MongoDB ObjectId stored as a string
+    _id?: string; // MongoDB ObjectId stored as a string
     title: string;
     author: string;
     description?: string;
@@ -18,6 +18,7 @@ export type Product = {
     category: string;
     stock: number;
     image_url?: string;
+    sold_count: number;
     created_at: string; // ISO Date format
   };
   

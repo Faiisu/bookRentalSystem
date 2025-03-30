@@ -171,25 +171,9 @@ export const fetchBook = async (id: string): Promise<Book | null> => {
   }
 };
 
-export const updateProduct = async (productId: string, updatedProduct: { name: string; price: number; category: string }) => {
-  try {
-    const response = await api.put(`/products/${productId}`, updatedProduct);
-    return response.data;
-  } catch (error) {
-    console.error("Error updating product:", error);
-    throw error;
-  }
-};
 
-export const deleteProduct = async (productId: string) => {
-  try {
-    const response = await api.delete(`/products/${productId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting product:", error);
-    throw error;
-  }
-};
+
+
 
 // Axios requests for Cart management
 export const addToCart = async (userEmail: string, productId: string, quantity: number) => {
@@ -230,6 +214,44 @@ export const fetchOrder = async (orderId: string) => {
   } catch (error) {
     console.error("Error fetching order:", error);
     throw error;
+  }
+};
+
+export const fetchBestSellingBooks = async (): Promise<Book[]> => {
+  try {
+    const response = await api.get<{ books: Book[] }>("/books/bestsellers");
+    return response.data.books; // ✅ ดึงเฉพาะ array ออก
+  } catch (error) {
+    console.error("Error fetching best-selling books:", error);
+    return [];
+  }
+};
+export const addBook = async (book: Book) => {
+  try {
+    const response = await api.post("/books", book);  // Sends the book object to the backend
+    return response.data;  // Return the added book data from the backend
+  } catch (error) {
+    console.error("Error adding book:", error);
+    throw error;
+  }
+};
+export const updateBook = async (id: string, updatedBook: Book) => {
+  try {
+    const response = await api.put(`http://localhost:8000/books/${id}`, updatedBook);  // PUT request to update the book
+    return response.data;  // Return the updated book data
+  } catch (error) {
+    console.error("Error updating book:", error);
+    throw error;
+  }
+};
+
+export const deleteBook = async (id: string) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/books/${id}`);
+    return response;  // Return the full response object
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    throw error;  // Propagate the error to the calling function
   }
 };
 

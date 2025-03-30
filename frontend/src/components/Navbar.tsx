@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useCartStore } from "../store/cartStore";
 import SearchBar from "./SearchBar";
 import { handleLogout } from "../auth";
+import SearchPage from "../pages/SearchPage";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -96,7 +97,7 @@ const Navbar = () => {
       <div className="bg-gray-100 py-3 border-b border-gray-300">
         <div className="container mx-auto flex justify-center gap-6 font-semibold uppercase text-sm">
           <Link to="/" className="hover:underline hover:bg-gray-200 px-3 py-2 rounded-md">Promotion</Link>
-          <Link to="/products" className="hover:underline hover:bg-gray-200 px-3 py-2 rounded-md">All Series</Link>
+          <Link to="/search" className="hover:underline hover:bg-gray-200 px-3 py-2 rounded-md">All Series</Link>
           <Link to="/" className="hover:underline hover:bg-gray-200 px-3 py-2 rounded-md">Writers</Link>
           <Link to="/" className="hover:underline hover:bg-gray-200 px-3 py-2 rounded-md">Manga</Link>
           <Link to="/" className="hover:underline hover:bg-gray-200 px-3 py-2 rounded-md">Novel</Link>

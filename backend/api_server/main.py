@@ -9,6 +9,8 @@ from mongo_models import Book
 from database.mongo import mongo_collection
 from database.mysql import get_sqldb
 
+from bson import ObjectId
+
 app = FastAPI()
 
 #################### CORS #####################
@@ -25,6 +27,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+def is_valid_object_id(book_id: str) -> bool:
+    try:
+        ObjectId(book_id)  # Try converting the string to ObjectId
+        return True
+    except Exception:
+        return False
+
 
 ###################### SQL ##############################################################
 
@@ -144,13 +153,6 @@ def login_admin(email: str, password: str, db=Depends(get_sqldb)):
 ###################### MONGO DB ##############################################################
 
 # Product Part
-# ✅ Add a new book
-@app.post("/books", response_model=Book)
-async def add_book(book: Book):
-    book_dict = book.dict(by_alias=True)
-    result = await mongo_collection["books"].insert_one(book_dict)
-    book._id = str(result.inserted_id)
-    return book
 
 
 # ✅ Get all books
@@ -164,6 +166,16 @@ async def get_books():
 
     return {"books": books_with_id} 
 
+
+@app.get("/books/bestsellers")
+async def get_best_sellers():
+    books_cursor = mongo_collection["books"].find().sort("sold_count", -1).limit(3)
+    books = await books_cursor.to_list(length=3)
+
+    books_with_id = [{**book, "_id": str(book["_id"])} for book in books]
+
+    return {"books": books_with_id}
+
 # ✅ Get a book by ID
 @app.get("/books/{book_id}", response_model=Book)
 async def get_book(book_id: str):
@@ -174,20 +186,66 @@ async def get_book(book_id: str):
     return book
 
 
-# ✅ Update a book
+from fastapi import HTTPException
+from bson import ObjectId
+
+# This function will update a book in MongoDB
 @app.put("/books/{book_id}", response_model=Book)
 async def update_book(book_id: str, book: Book):
-    book_dict = {k: v for k, v in book.dict(by_alias=True).items() if v is not None}
-    result = await mongo_collection["books"].update_one({"_id": ObjectId(book_id)}, {"$set": book_dict})
+    # Ensure _id is removed from the update payload since _id is immutable
+    book_dict = {k: v for k, v in book.dict(by_alias=True).items() if k != "_id"}
+
+    # Perform the update operation without modifying the _id field
+    result = await mongo_collection["books"].update_one(
+        {"_id": ObjectId(book_id)},  # The condition for finding the document
+        {"$set": book_dict}  # Update the fields except _id
+    )
+
+    # Check if the update was successful
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Book not found")
-    return {**book.dict(), "id": book_id}
+
+    return {**book.dict(), "id": book_id}  # Return the updated book
 
 
 # ✅ Delete a book
 @app.delete("/books/{book_id}")
 async def delete_book(book_id: str):
-    result = await mongo_collection["books"].delete_one({"_id": ObjectId(book_id)})
+    print(f"Received book_id: {book_id}")  # Log the received book_id for debugging
+
+    # Validate book_id
+    if not is_valid_object_id(book_id):
+        raise HTTPException(status_code=400, detail="Invalid Book ID")
+
+    
+    # Perform the deletion operation
+    result = await mongo_collection["books"].delete_one({"_id": ObjectId(book_id)})  # Correct use of ObjectId
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Book not found")
-    return {"message": "Book deleted"}
+    
+    return {"message": "Book deleted successfully"}
+
+
+from fastapi import HTTPException
+from bson import ObjectId
+
+@app.post("/books", response_model=Book)
+async def add_book(book: Book):
+    try:
+        # Remove _id from the incoming book data as MongoDB will generate this automatically
+        book_dict = book.dict(by_alias=True)
+        
+        # Insert book into MongoDB, MongoDB will generate the _id
+        result = await mongo_collection["books"].insert_one(book_dict)
+        
+        # Fetch the inserted book with the generated _id
+        inserted_book = await mongo_collection["books"].find_one({"_id": result.inserted_id})
+
+        if not inserted_book:
+            raise HTTPException(status_code=400, detail="Failed to add book")
+
+        # Return the newly added book including the generated _id
+        inserted_book["_id"] = str(inserted_book["_id"])  # Convert ObjectId to string
+        return inserted_book
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error adding book: {str(e)}")
