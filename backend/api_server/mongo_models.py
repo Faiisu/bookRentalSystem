@@ -11,8 +11,11 @@ class Book(BaseModel):
     category: str = Field(..., min_length=1, max_length=100)
     stock: int = Field(..., ge=0)  # Stock can't be negative
     image_url: Optional[str] = None  # Ensures valid URL
+    sold_count: int = Field(default=0, ge=0)
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    
 
     class Config:
         json_encoders = {ObjectId: str}  # Convert ObjectId to string for JSON
         allow_population_by_field_name = True
+        extra = "allow"
