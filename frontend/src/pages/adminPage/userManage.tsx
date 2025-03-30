@@ -37,17 +37,17 @@ const UserManage: React.FC = () => {
     const [emailToDelete, setEmailToDelete] = useState<string>("");
 
     useEffect(() => {
-    const getUsers = async () => {
-        try {
-        const data = await fetchUsers();
-        setUsers(data.Members);
-        } catch (err) {
-        console.error("Error fetching users:", err);
-        setError("Failed to fetch users.");
-        }
-    };
+            const getUsers = async () => {
+                try {
+                    const data = await fetchUsers();
+                    setUsers(data.Members);
+                } catch (err) {
+                    console.error("Error fetching users:", err);
+                    setError("Failed to fetch users.");
+                }
+        };
 
-    getUsers();
+        getUsers();
     }, []);
 
     if (error) return <div>{error}</div>;
@@ -68,60 +68,60 @@ const UserManage: React.FC = () => {
     };
       
     return (
-    <div className="min-h-screen w-full flex justify-center items-center">
-        {/* Background container with margin-top and border shadow */}
-        <div className="bg-gray-300 min-h-[700px] min-w-[500px] rounded-lg shadow-lg w-full max-w-5xl p-8">
-        <div className='flex gap-5'>
-            <h2 className="text-3xl font-bold mb-6">Users</h2>   
-        </div>
-        {users.length ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {users.map((user) => (
-                <div
-                key={user.member_id}
-                className="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:shadow-md transition duration-200"
-                >
-                <div className="mb-3 text-center font-bold">
-                    {user.member_rank}
-                </div>
-                <div className="mb-3">
-                    <span className="font-semibold text-gray-700">Username:</span>{' '}
-                    <span className="text-gray-900">{user.username}</span>
-                </div>
-                <div className="mb-3">
-                    <span className="font-semibold text-gray-700">Email:</span>{' '}
-                    <span className="text-gray-900">{user.email}</span>
-                </div>
-                <div className="mb-3">
-                    <span className="font-semibold text-gray-700">Name:</span>{' '}
-                    <span className="text-gray-900">
-                    {user.firstName} {user.lastName}
-                    </span>
-                </div>
-                <div>
-                    <span className="font-semibold text-gray-700">Birthday:</span>{' '}
-                    <span className="text-gray-900">{user.birthday}</span>
-                </div>
-                <button
-                    type="button"
-                    className="w-[100%] py-2 mt-4 rounded-lg bg-red-500 text-white font-medium text-lg flex items-center justify-center gap-2 hover:bg-red-600 transition"
-                    onClick={ ()=> handleDelete(user.email) }
-                >
-                    <TrashIcon></TrashIcon>DELETE
-                </button>
-                <ConfirmationModal
-                    show={showModal}
-                    onConfirm={handleConfirmDelete}
-                    onCancel={handleCancelDelete}
-                />
-                </div>
-            ))}
+        <div className="min-h-screen w-full flex justify-center items-center">
+            {/* Background container with margin-top and border shadow */}
+            <div className="bg-gray-300 min-h-[700px] min-w-[500px] rounded-lg shadow-lg w-full max-w-5xl p-8">
+            <div className='flex gap-5'>
+                <h2 className="text-3xl font-bold mb-6">Users</h2>   
             </div>
-        ) : (
-            <div>No users found.</div>
-        )}
+            {users.length ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {users.map((user) => (
+                    <div
+                    key={user.member_id}
+                    className="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:shadow-md transition duration-200"
+                    >
+                    <div className="mb-3 text-center font-bold">
+                        {user.member_rank}
+                    </div>
+                    <div className="mb-3">
+                        <span className="font-semibold text-gray-700">Username:</span>{' '}
+                        <span className="text-gray-900">{user.username}</span>
+                    </div>
+                    <div className="mb-3">
+                        <span className="font-semibold text-gray-700">Email:</span>{' '}
+                        <span className="text-gray-900">{user.email}</span>
+                    </div>
+                    <div className="mb-3">
+                        <span className="font-semibold text-gray-700">Name:</span>{' '}
+                        <span className="text-gray-900">
+                        {user.firstName} {user.lastName}
+                        </span>
+                    </div>
+                    <div>
+                        <span className="font-semibold text-gray-700">Birthday:</span>{' '}
+                        <span className="text-gray-900">{user.birthday}</span>
+                    </div>
+                    <button
+                        type="button"
+                        className="w-[100%] py-2 mt-4 rounded-lg bg-red-500 text-white font-medium text-lg flex items-center justify-center gap-2 hover:bg-red-600 transition"
+                        onClick={ ()=> handleDelete(user.email) }
+                    >
+                        <TrashIcon></TrashIcon>DELETE
+                    </button>
+                    <ConfirmationModal
+                        show={showModal}
+                        onConfirm={handleConfirmDelete}
+                        onCancel={handleCancelDelete}
+                    />
+                    </div>
+                ))}
+                </div>
+            ) : (
+                <div>No users found.</div>
+            )}
+            </div>
         </div>
-    </div>
     );
 };
 

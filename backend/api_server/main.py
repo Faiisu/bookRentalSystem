@@ -44,14 +44,14 @@ def is_valid_object_id(book_id: str) -> bool:
 @app.get("/users")
 def get_users(db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT member_id, email, username, firstName, lastName, birthday, end_date, member_rank, point, discount FROM Member")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
+        cursor.execute("SELECT member_id, email, username, firstName, lastName, birthday, end_date, rank_name as member_rank, point, discount FROM Member, ranks_permission WHERE Member.rank_id = ranks_permission.rank_id")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
         users = cursor.fetchall()
     return {"Members": users}
 
 @app.get("/users/{email}")
 def get_users_by_email(email: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT member_id, email, username, birthday, end_date, member_rank, point, discount FROM Member where email = %s", email)
+        cursor.execute("SELECT member_id, email, username, birthday, end_date, rank_name as member_rank, point, discount FROM Member, ranks_permission WHERE email = %s AND Member.rank_id = ranks_permission.rank_id", email)
         existing_user = cursor.fetchone()
         if existing_user:
             return {"Member": existing_user}
@@ -61,7 +61,7 @@ def get_users_by_email(email: str, db=Depends(get_sqldb)):
 @app.get("/users/{email}/{password}")
 def login_user(email: str, password: str, db=Depends(get_sqldb)):
     with db.cursor() as cursor:
-        cursor.execute("SELECT member_id, email, username, firstName, lastName, birthday, end_date, member_rank, point, discount FROM Member where email = %s and password = %s", (email, password))
+        cursor.execute("SELECT member_id, email, username, firstName, lastName, birthday, end_date, rank_name as member_rank, point, discount FROM Member, ranks_permission where email = %s and password = %s AND Member.rank_id = ranks_permission.rank_id", (email, password))
         existing_user = cursor.fetchone()
         if existing_user:
             return {"Member": existing_user}
@@ -80,7 +80,7 @@ def add_user(user: CreateMember, db=Depends(get_sqldb)):
 
         # ✅ เพิ่ม User ใหม่, handle birthday as NULL if not provided
         cursor.execute(
-            "INSERT INTO Member (email, username, password, firstName, lastName, birthday) VALUES (%s, %s, %s, %s, %s, %s)", 
+            "INSERT INTO Member (email, username, password, firstName, lastName, birthday, rank_id) VALUES (%s, %s, %s, %s, %s, %s, 1)", 
             (user.email, user.username, user.password, user.firstName, user.lastName, user.birthday)
         )
         db.commit()  # 🔹 ต้อง commit() เพื่อบันทึกข้อมูลลง MySQL
@@ -148,6 +148,13 @@ def login_admin(email: str, password: str, db=Depends(get_sqldb)):
             return {"Employee": existing_user}
         else:
             raise HTTPException(status_code=404, detail="email not found")
+        
+@app.get("/transactionsHeader")
+def get_users(db=Depends(get_sqldb)):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT * FROM Transaction_Header")  # 🔹 ห้ามดึง password เพื่อความปลอดภัย
+        trans = cursor.fetchall()
+    return {"transactions": trans}
 
 
 ###################### MONGO DB ##############################################################

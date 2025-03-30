@@ -25,6 +25,16 @@ export const fetchUsers = async () => {
   }
 }
 
+export const fetchTrans = async () => {
+  try{
+    const response = await api.get("/transactionsHeader");
+    return response.data
+  } catch(error){
+    console.error("error fetching transaction: ", error);
+    throw error;
+  }
+} 
+
 export const fetchUserByEmail = async(email: string) => {
   try {
     const res = await api.get(`/users/${email}`)

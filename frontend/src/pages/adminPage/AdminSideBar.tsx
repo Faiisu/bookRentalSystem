@@ -41,43 +41,47 @@ const AdminSideBar = () => {
             <nav>
               <ul>
                 <li className="mb-2">
-                  <NavLink
-                    to="/AdminPanel/main"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "bg-gray-700 p-2 block rounded"
-                        : "hover:bg-gray-700 p-2 block rounded"
+                  <NavLink 
+                    to="/AdminPanel/main" 
+                    className={({ isActive }) => 
+                      isActive ? "bg-gray-700 p-2 block rounded" : "hover:bg-gray-700 p-2 block rounded"
                     }
                   >
                     <span className="text-gray-100">MAIN</span>
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                  <NavLink
-                    to="/AdminPanel/usermanage"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "bg-gray-700 p-2 block rounded"
-                        : "hover:bg-gray-700 p-2 block rounded"
+                  <NavLink 
+                    to="/AdminPanel/usermanage" 
+                    className={({ isActive }) => 
+                      isActive ? "bg-gray-700 p-2 block rounded" : "hover:bg-gray-700 p-2 block rounded"
                     }
                   >
                     <span className="text-gray-100">MEMBERS</span>
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                  <NavLink
-                    to="/AdminPanel/stockmanage"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "bg-gray-700 p-2 block rounded"
-                        : "hover:bg-gray-700 p-2 block rounded"
+                  <NavLink 
+                    to="/AdminPanel/stockmanage" 
+                    className={({ isActive }) => 
+                      isActive ? "bg-gray-700 p-2 block rounded" : "hover:bg-gray-700 p-2 block rounded"
                     }
                   >
                     <span className="text-gray-100">STOCK</span>
                   </NavLink>
-                </li>
+                </li>      
+                <li className="mb-2">
+                  <NavLink 
+                    to="/AdminPanel/transHistory" 
+                    className={({ isActive }) => 
+                      isActive ? "bg-gray-700 p-2 block rounded" : "hover:bg-gray-700 p-2 block rounded"
+                    }
+                  >
+                    <span className="text-gray-100">TRANSACTIONS</span>
+                  </NavLink>
+                </li>            
               </ul>
-            </nav>
+              </nav>
 
             {/* Logout Button */}
             <button
