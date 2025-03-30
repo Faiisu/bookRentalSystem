@@ -68,6 +68,16 @@ const AdminSideBar = () => {
                     >
                       <span className="text-gray-100">STOCK</span>
                     </NavLink>
+                  </li>      
+                  <li className="mb-2">
+                    <NavLink 
+                      to="/AdminPanel/transHistory" 
+                      className={({ isActive }) => 
+                        isActive ? "bg-gray-700 p-2 block rounded" : "hover:bg-gray-700 p-2 block rounded"
+                      }
+                    >
+                      <span className="text-gray-100">TRANSACTIONS</span>
+                    </NavLink>
                   </li>            
                 </ul>
               </nav>

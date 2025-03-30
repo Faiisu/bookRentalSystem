@@ -13,6 +13,7 @@ import AdminSideBar from "./pages/adminPage/AdminSideBar";
 import AdminMain from "./pages/adminPage/AdminMain";
 import UserManage from "./pages/adminPage/userManage";
 import StockManage from "./pages/adminPage/stockManage";
+import Transhistory from "./pages/adminPage/transHistory";
 
 import { useState, useEffect } from "react";
 import React from "react";
@@ -81,6 +82,14 @@ const App = () => {
             <>
               <AdminSideBar />
               <StockManage />
+            </>
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/adminPanel/transHistory" element={
+          <ProtectedAdminRoute>
+            <>
+              <AdminSideBar />
+              <Transhistory />
             </>
           </ProtectedAdminRoute>
         } />
